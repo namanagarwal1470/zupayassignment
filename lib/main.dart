@@ -83,7 +83,7 @@ class _practiceState extends State<practice> {
                 ? detailscontainer("directorname", directorname)
                 : Text(""),
             SizedBox(height: 50),
-            show
+            (show & login)
                 ? GestureDetector(
                     onTap: () {
                       setState(() {

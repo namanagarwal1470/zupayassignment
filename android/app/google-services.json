@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "44437325157",
+    "project_id": "zupayintern",
+    "storage_bucket": "zupayintern.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44437325157:android:4e062c6d9965bf27520d8c",
+        "android_client_info": {
+          "package_name": "com.example.practice_api"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44437325157-a8p7ea2tgsept7vggini9ecvfjlbho88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvQsmrP9ImGeXqdSNJ5cEpiEgD4Od8F3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44437325157-a8p7ea2tgsept7vggini9ecvfjlbho88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

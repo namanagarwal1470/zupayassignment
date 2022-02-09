@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(practice());
 }
 
@@ -15,6 +20,7 @@ class practice extends StatefulWidget {
 
 class _practiceState extends State<practice> {
   bool show = false;
+  bool login = false;
 
   List movienames = ['baaghi3', 'hero'];
   List directornames = ['bhushan', 'vikram'];
@@ -40,23 +46,42 @@ class _practiceState extends State<practice> {
                         movienames[index], directornames[index]);
                   }),
             ),
-            Center(
-                child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        show = true;
-                      });
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 80,
-                      color: Colors.yellow,
-                      child: Center(child: Text("Add movie")),
-                    ))),
+            login
+                ? Center(
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            show = true;
+                            login = true;
+                          });
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 80,
+                          color: Colors.yellow,
+                          child: Center(child: Text("Add movie")),
+                        )))
+                : Center(
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            initiateSignIn();
+                          });
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 100,
+                          color: Colors.yellow,
+                          child: Center(child: Text("Google login")),
+                        ))),
             SizedBox(height: 40),
-            show ? detailscontainer("moviename", moviename) : Text(""),
+            (show & login)
+                ? detailscontainer("moviename", moviename)
+                : Text(""),
             SizedBox(height: 20),
-            show ? detailscontainer("directorname", directorname) : Text(""),
+            (show & login)
+                ? detailscontainer("directorname", directorname)
+                : Text(""),
             SizedBox(height: 50),
             show
                 ? GestureDetector(
@@ -174,5 +199,44 @@ class _practiceState extends State<practice> {
         ),
       ),
     );
+  }
+
+  Future<int> SocialhandleSignIn() async {
+    var firebaseAuth = FirebaseAuth.instance;
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      final user = await firebaseAuth.signInWithCredential(credential);
+
+      return 1;
+    } catch (error) {
+      return 0;
+    }
+
+    return 0;
+  }
+
+  void initiateSignIn() {
+    SocialhandleSignIn().then((result) {
+      if (result == 1) {
+        setState(() {
+          show = true;
+          login = true;
+        });
+      } else {
+        setState(() {
+          show = false;
+          login = false;
+        });
+      }
+    });
   }
 }
